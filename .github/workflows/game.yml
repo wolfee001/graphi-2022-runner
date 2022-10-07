@@ -1,0 +1,16 @@
+name: Game
+
+on: workflow_dispatch
+
+jobs:
+  game:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Login to GitLab
+      uses: docker/login-action@v2
+      with:
+        registry: registry.gitlab.com
+        username: ${{ secrets.GITLAB_USERNAME }}
+        password: ${{ secrets.GITLAB_PASSWORD }}
+
