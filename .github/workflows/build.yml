@@ -20,7 +20,7 @@ jobs:
           git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
           cd graphi-2022
           COMMITED_HASH=`git rev-parse HEAD`
-          if [[ $LATEST_HASH != $COMMITED_HASH ]] then
+          if [[ $LATEST_HASH != $COMMITED_HASH ]]; then
             echo "The latest hashes are not the same, needs build!"
             echo "::set-output name=needs_build::TRUE"
           else
