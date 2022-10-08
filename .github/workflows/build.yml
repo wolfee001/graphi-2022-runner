@@ -29,13 +29,20 @@ jobs:
     - name: Configure CMake
       run: |
         cd graphi-2022
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
 
     - name: Build
       run: |
-        cmake --build ${{github.workspace}}/build --config Release
+        cd graphi-2022
+        cmake --build build --config Release --target install
 
     - name: Test
       run: |
-        cd ${{github.workspace}}/build
+        cd graphi-2022/build
         ctest . -C Release
+
+    - name: Build docker
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cd graphi-2022
+        docker build -t registry.gitlab.com/wolfee/graphi-2022/game:latest -f dockers/game ./target
