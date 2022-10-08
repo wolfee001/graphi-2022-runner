@@ -9,5 +9,5 @@ jobs:
     steps:
       - name: Checking out
         run: |
-          git clone http://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_PASSWORD }}@gitlab.com/wolfee/graphi-2022.git
+          git clone http://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
           cd graphi-2022
