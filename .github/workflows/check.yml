@@ -1,8 +1,10 @@
 name: Check
 
 on:
-  schedule:
-    - cron: '* * * * *'
+  push:
+    branches:
+      - "check_loop"
+  workflow_dispatch: {}
 
 jobs:
   check:
