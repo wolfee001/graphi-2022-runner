@@ -73,6 +73,8 @@ jobs:
         cmake --build build --config Release --target install
         docker build -t registry.gitlab.com/wolfee/graphi-2022/game:latest -f dockers/game ./target
         docker image push registry.gitlab.com/wolfee/graphi-2022/game:latest
+        docker build -t registry.gitlab.com/wolfee/graphi-2022/server:latest -f dockers/server ./target
+        docker image push registry.gitlab.com/wolfee/graphi-2022/server:latest
 
     - name: Check tags
       run: |
