@@ -17,29 +17,29 @@ jobs:
       run: |
         git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
 
-    - name: Install extra runtime
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev
+    # - name: Install extra runtime
+    #   if: matrix.os == 'ubuntu-latest'
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev
 
-    - name: Install conan
-      uses: turtlebrowser/get-conan@main
+    # - name: Install conan
+    #   uses: turtlebrowser/get-conan@main
 
-    - name: Configure CMake
-      run: |
-        cd graphi-2022
-        cmake -B build -DCMAKE_BUILD_TYPE=Release
+    # - name: Configure CMake
+    #   run: |
+    #     cd graphi-2022
+    #     cmake -B build -DCMAKE_BUILD_TYPE=Release
 
-    - name: Build
-      run: |
-        cd graphi-2022
-        cmake --build build --config Release --target install
+    # - name: Build
+    #   run: |
+    #     cd graphi-2022
+    #     cmake --build build --config Release --target install
 
-    - name: Test
-      run: |
-        cd graphi-2022/build
-        ctest . -C Release
+    # - name: Test
+    #   run: |
+    #     cd graphi-2022/build
+    #     ctest . -C Release
 
   generate_missing_images:
     runs-on: ubuntu-latest
@@ -82,7 +82,7 @@ jobs:
           TAG=`echo $line | cut -d ' ' -f2`
           TAG=`echo $TAG | cut -d '/' -f3`
           echo "Checking tag $TAG..."
-          docker pull registry.gitlab.com/wolfee/graphi-2022/game:$TAG &> /dev/null
+          `docker pull registry.gitlab.com/wolfee/graphi-2022/game:$TAG &> /dev/null`
           if [[ $? ]]; then
               echo "$TAG not found, building from hash $HASH..."
               rm -rf build
