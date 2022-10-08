@@ -51,28 +51,28 @@ jobs:
       run: |
         git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
 
-    - name: Install extra runtime
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev
+    # - name: Install extra runtime
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev
 
-    - name: Install conan
-      uses: turtlebrowser/get-conan@main
+    # - name: Install conan
+    #   uses: turtlebrowser/get-conan@main
 
-    - name: Login to GitLab
-      uses: docker/login-action@v2
-      with:
-        registry: registry.gitlab.com
-        username: ${{ secrets.GITLAB_USERNAME }}
-        password: ${{ secrets.GITLAB_PASSWORD }}
+    # - name: Login to GitLab
+    #   uses: docker/login-action@v2
+    #   with:
+    #     registry: registry.gitlab.com
+    #     username: ${{ secrets.GITLAB_USERNAME }}
+    #     password: ${{ secrets.GITLAB_PASSWORD }}
 
-    - name: Build latest
-      run: |
-        cd graphi-2022
-        cmake -B build -DCMAKE_BUILD_TYPE=Release
-        cmake --build build --config Release --target install
-        docker build -t registry.gitlab.com/wolfee/graphi-2022/game:latest -f dockers/game ./target
-        docker image push registry.gitlab.com/wolfee/graphi-2022/game:latest
+    # - name: Build latest
+    #   run: |
+    #     cd graphi-2022
+    #     cmake -B build -DCMAKE_BUILD_TYPE=Release
+    #     cmake --build build --config Release --target install
+    #     docker build -t registry.gitlab.com/wolfee/graphi-2022/game:latest -f dockers/game ./target
+    #     docker image push registry.gitlab.com/wolfee/graphi-2022/game:latest
 
     - name: Check tags
       run: |
@@ -82,7 +82,7 @@ jobs:
           TAG=`echo $line | cut -d ' ' -f2`
           TAG=`echo $TAG | cut -d '/' -f3`
           echo "Checking tag $TAG..."
-          `docker pull registry.gitlab.com/wolfee/graphi-2022/game:$TAG &> /dev/null`
+          docker pull registry.gitlab.com/wolfee/graphi-2022/game:$TAG &> /dev/null || echo ""
           if [[ $? ]]; then
               echo "$TAG not found, building from hash $HASH..."
               rm -rf build
