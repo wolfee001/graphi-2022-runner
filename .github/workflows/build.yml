@@ -3,11 +3,25 @@ name: Build
 on: workflow_dispatch
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
 
+    outputs:
+      need_build: ${{ steps.check_step.outputs.test }}
+
     steps:
-      - name: Checking out
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checking
+        id: check_step
         run: |
+          LATEST_HASH=`cat latest-hash`
+          echo $LATEST_HASH
           git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
           cd graphi-2022
+          COMMITED_HASH=`git rev-parse HEAD`
+          if [[ LATEST)HASH != COMMITED_HASH ]]; then
+            echo "looofasz"
+          fi
+
