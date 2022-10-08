@@ -41,8 +41,17 @@ jobs:
         cd graphi-2022/build
         ctest . -C Release
 
+    - name: Login to GitLab docker
+      uses: docker/login-action@v2
+      if: matrix.os == 'ubuntu-latest'
+      with:
+        registry: registry.gitlab.com
+        username: ${{ secrets.GITLAB_USERNAME }}
+        password: ${{ secrets.GITLAB_PASSWORD }}
+
     - name: Build docker
       if: matrix.os == 'ubuntu-latest'
       run: |
         cd graphi-2022
         docker build -t registry.gitlab.com/wolfee/graphi-2022/game:latest -f dockers/game ./target
+        docker image push registry.gitlab.com/wolfee/graphi-2022/game:latest
