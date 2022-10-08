@@ -13,6 +13,8 @@ jobs:
       - name: Checking latest hash in gitlab
         id: check_step
         run: |
+          git config --global user.email "search.allstars@gmail.com"
+          git config --global user.name "Search AllStars"
           LATEST_HASH=`cat latest-hash`
           git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
           cd graphi-2022
