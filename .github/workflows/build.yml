@@ -7,21 +7,31 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      need_build: ${{ steps.check_step.outputs.test }}
+      need_build: ${{ steps.check_step.outputs.needs_build }}
 
     steps:
-      - name: Checkout
+      - name: Checkout local
         uses: actions/checkout@v2
 
-      - name: Checking
+      - name: Checking latest hash in gitlab
         id: check_step
         run: |
           LATEST_HASH=`cat latest-hash`
-          echo $LATEST_HASH
           git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
           cd graphi-2022
           COMMITED_HASH=`git rev-parse HEAD`
           if [[ LATEST_HASH != COMMITED_HASH ]]; then
-            echo "looofasz"
+            echo "The latest hashes are not the same, needs build!"
+            echo "::set-output name=needs_build::TRUE"
           fi
 
+  build:
+    runs-on: ubuntu-latest
+    needs: check
+
+    if: ${{needs.check.outputs.needs_build}} == "TRUE"
+
+    steps:
+      - name: Checkout gitlab repository
+        run: |
+          git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
