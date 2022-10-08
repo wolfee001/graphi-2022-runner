@@ -33,3 +33,6 @@ jobs:
           else
             echo "No new commits!"
           fi
+          git checkout check_loop
+          git commit -m "loop" --allow-empty
+          git push
