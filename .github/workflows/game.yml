@@ -13,4 +13,5 @@ jobs:
         registry: registry.gitlab.com
         username: ${{ secrets.GITLAB_USERNAME }}
         password: ${{ secrets.GITLAB_PASSWORD }}
-
+    - name: Run
+      run: docker run registry.gitlab.com/wolfee/graphi-2022/game
