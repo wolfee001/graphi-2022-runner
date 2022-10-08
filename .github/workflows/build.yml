@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check
 
-    if: ${{ needs.check.outputs.needs_build }} == "TRUE"
+    if: needs.check.outputs.needs_build == "TRUE"
 
     steps:
       - name: Checkout gitlab repository
