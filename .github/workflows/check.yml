@@ -2,9 +2,7 @@ name: Check
 
 on:
   schedule:
-    - cron: "*/1 * * * *"
-
-  workflow_dispatch: {}
+    - cron: '* * * * *'
 
 jobs:
   check:
