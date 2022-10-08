@@ -20,18 +20,22 @@ jobs:
           git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
           cd graphi-2022
           COMMITED_HASH=`git rev-parse HEAD`
-          if [[ $LATEST_HASH != $COMMITED_HASH ]]; then
+          if [[ $LATEST_HASH != $COMMITED_HASH ]] then
             echo "The latest hashes are not the same, needs build!"
             echo "::set-output name=needs_build::TRUE"
+          else
+            echo "TNo new commits!"
+            echo "::set-output name=needs_build::FALSE"
           fi
 
   build:
     runs-on: ubuntu-latest
     needs: check
 
-    if: ${{needs.check.outputs.needs_build}} == "TRUE"
+    if: ${{ needs.check.outputs.needs_build }} == "TRUE"
 
     steps:
       - name: Checkout gitlab repository
         run: |
+          echo ${{ needs.check.outputs.needs_build }}
           git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
