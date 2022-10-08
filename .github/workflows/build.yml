@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      need_build: ${{ steps.check_step.outputs.needs_build }}
+      needs_build: ${{ steps.check_step.outputs.needs_build }}
 
     steps:
       - name: Checkout local
@@ -24,7 +24,7 @@ jobs:
             echo "The latest hashes are not the same, needs build!"
             echo "::set-output name=needs_build::TRUE"
           else
-            echo "TNo new commits!"
+            echo "No new commits!"
             echo "::set-output name=needs_build::FALSE"
           fi
 
