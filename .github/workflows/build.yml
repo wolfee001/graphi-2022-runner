@@ -82,16 +82,16 @@ jobs:
           TAG=`echo $line | cut -d ' ' -f2`
           TAG=`echo $TAG | cut -d '/' -f3`
           echo "Checking tag $TAG..."
-          docker pull registry.gitlab.com/wolfee/graphi-2022/game:$TAG &> /dev/null || echo ""
-          if [[ $? ]]; then
-              echo "$TAG not found, building from hash $HASH..."
-              rm -rf build
-              git checkout $HASH
-              cmake -B build -DCMAKE_BUILD_TYPE=Release
-              cmake --build build --config Release --target install
-              docker build -t registry.gitlab.com/wolfee/graphi-2022/game:$TAG -f dockers/game ./target
-              docker image push registry.gitlab.com/wolfee/graphi-2022/game:$TAG
+          DOCKER_OUTPUT=`docker pull registry.gitlab.com/wolfee/graphi-2022/game:$TAG &> /dev/null || echo "NOT FOUND"`
+          if [[ $DOCKER_OUTPUT == "NOT FOUND" ]]; then
+            echo "$TAG not found, building from hash $HASH..."
+            rm -rf build
+            git checkout $HASH
+            cmake -B build -DCMAKE_BUILD_TYPE=Release
+            cmake --build build --config Release --target install
+            docker build -t registry.gitlab.com/wolfee/graphi-2022/game:$TAG -f dockers/game ./target
+            docker image push registry.gitlab.com/wolfee/graphi-2022/game:$TAG
           else
-              echo "$TAG found."
+            echo "$TAG found."
           fi
         done
