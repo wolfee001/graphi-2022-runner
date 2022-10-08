@@ -1,0 +1,12 @@
+name: Build
+
+on: workflow_dispatch
+
+jobs:
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Checking out
+      run: |
+        git clone http://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_PASSWORD }}@gitlab.com/wolfee/graphi-2022.git
+        cd graphi-2022
