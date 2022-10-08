@@ -1,38 +1,37 @@
 name: Check
 
 on:
-  push:
-    branches:
-      - "check_loop"
-  workflow_dispatch: {}
+  on:
+   schedule:
+      - cron: "*/5 * * * *"
 
 jobs:
   check:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout local
-        uses: actions/checkout@v2
-
       - name: Checking latest hash in gitlab
         id: check_step
         run: |
           git config --global user.email "search.allstars@gmail.com"
           git config --global user.name "Search AllStars"
-          LATEST_HASH=`cat latest-hash`
-          git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
-          cd graphi-2022
-          COMMITED_HASH=`git rev-parse HEAD`
-          cd ..
-          if [[ $LATEST_HASH != $COMMITED_HASH ]]; then
-            echo "The latest hashes are not the same, needs build!"
-            echo $COMMITED_HASH > latest-hash
-            git add latest-hash
-            git commit -m "update hash"
-            git push
-          else
-            echo "No new commits!"
-          fi
-          git checkout check_loop
-          git commit -m "loop" --allow-empty
-          git push
+          for i in {1..20}
+          do
+            git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
+            cd graphi-2022
+            COMMITED_HASH=`git rev-parse HEAD`
+            cd ..
+            git clone https://github.com/wolfee001/graphi-2022-runner.git
+            cd graphi-2022-runner
+            LATEST_HASH=`cat latest-hash`
+            if [[ $LATEST_HASH != $COMMITED_HASH ]]; then
+              echo "The latest hashes are not the same, needs build!"
+              echo $COMMITED_HASH > latest-hash
+              git add latest-hash
+              git commit -m "update hash"
+              git push
+            else
+              echo "No new commits!"
+            fi
+            sleep 15
+          done
