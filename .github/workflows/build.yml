@@ -31,12 +31,12 @@ jobs:
     - name: Configure CMake
       run: |
         cd graphi-2022
-        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        sudo cmake -B build -DCMAKE_BUILD_TYPE=Release
 
     - name: Build
       run: |
         cd graphi-2022
-        cmake --build build --config Release --target install
+        sudo cmake --build build --config Release --target install
 
     - name: Test
       run: |
@@ -73,8 +73,8 @@ jobs:
     - name: Build latest
       run: |
         cd graphi-2022
-        cmake -B build -DCMAKE_BUILD_TYPE=Release
-        cmake --build build --config Release --target install
+        sudo cmake -B build -DCMAKE_BUILD_TYPE=Release
+        sudo cmake --build build --config Release --target install
         docker build -t registry.gitlab.com/wolfee/graphi-2022/game:latest -f dockers/game ./target
         docker image push registry.gitlab.com/wolfee/graphi-2022/game:latest
         docker build -t registry.gitlab.com/wolfee/graphi-2022/server:latest -f dockers/server ./target
@@ -91,10 +91,10 @@ jobs:
           DOCKER_OUTPUT=`docker pull registry.gitlab.com/wolfee/graphi-2022/game:$TAG &> /dev/null || echo "NOT FOUND"`
           if [[ $DOCKER_OUTPUT == "NOT FOUND" ]]; then
             echo "$TAG not found, building from hash $HASH..."
-            rm -rf build
+            sudo rm -rf build
             git checkout $HASH
-            cmake -B build -DCMAKE_BUILD_TYPE=Release
-            cmake --build build --config Release --target install
+            sudo cmake -B build -DCMAKE_BUILD_TYPE=Release
+            sudo cmake --build build --config Release --target install
             docker build -t registry.gitlab.com/wolfee/graphi-2022/game:$TAG -f dockers/game ./target
             docker image push registry.gitlab.com/wolfee/graphi-2022/game:$TAG
           else
