@@ -70,6 +70,7 @@ jobs:
     - name: Build latest
       run: |
         cd graphi-2022
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
         cmake --build build --config Release --target install
         docker build -t registry.gitlab.com/wolfee/graphi-2022/game:latest -f dockers/game ./target
         docker image push registry.gitlab.com/wolfee/graphi-2022/game:latest
@@ -87,6 +88,7 @@ jobs:
               echo "$TAG not found, building from hash $HASH..."
               rm -rf build
               git checkout $HASH
+              cmake -B build -DCMAKE_BUILD_TYPE=Release
               cmake --build build --config Release --target install
               docker build -t registry.gitlab.com/wolfee/graphi-2022/game:$TAG -f dockers/game ./target
               docker image push registry.gitlab.com/wolfee/graphi-2022/game:$TAG
