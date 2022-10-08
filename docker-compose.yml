@@ -1,0 +1,43 @@
+services:
+  server:
+    image: registry.gitlab.com/wolfee/graphi-2022/server:latest
+    pull_policy: always
+    network_mode: "host"
+    environment:
+      - MAP=${MAP}
+
+  player1:
+    depends_on:
+      - server
+    image: registry.gitlab.com/wolfee/graphi-2022/game:${P1}
+    pull_policy: always
+    network_mode: "host"
+    environment:
+      - MAP=${MAP}
+
+  player2:
+    depends_on:
+      - player1
+    image: registry.gitlab.com/wolfee/graphi-2022/game:${P2}
+    pull_policy: always
+    network_mode: "host"
+    environment:
+      - MAP=${MAP}
+
+  player3:
+    depends_on:
+      - player2
+    image: registry.gitlab.com/wolfee/graphi-2022/game:${P3}
+    pull_policy: always
+    network_mode: "host"
+    environment:
+      - MAP=${MAP}
+
+  player4:
+    depends_on:
+      - player3
+    image: registry.gitlab.com/wolfee/graphi-2022/game:${P4}
+    pull_policy: always
+    network_mode: "host"
+    environment:
+      - MAP=${MAP}
