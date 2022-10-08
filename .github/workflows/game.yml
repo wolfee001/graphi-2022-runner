@@ -14,22 +14,22 @@ jobs:
         username: ${{ secrets.GITLAB_USERNAME }}
         password: ${{ secrets.GITLAB_PASSWORD }}
     - name: Map 1
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=1
+      run: docker run --env MAP=1 registry.gitlab.com/wolfee/graphi-2022/game
     - name: Map 2
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=2
+      run: docker run --env MAP=2 registry.gitlab.com/wolfee/graphi-2022/game
     - name: Map 3
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=3
+      run: docker run --env MAP=3 registry.gitlab.com/wolfee/graphi-2022/game
     - name: Map 4
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=4
+      run: docker run --env MAP=4 registry.gitlab.com/wolfee/graphi-2022/game
     - name: Map 5
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=5
+      run: docker run --env MAP=5 registry.gitlab.com/wolfee/graphi-2022/game
     - name: Map 6
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=6
+      run: docker run --env MAP=6 registry.gitlab.com/wolfee/graphi-2022/game
     - name: Map 7
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=7
+      run: docker run --env MAP=7 registry.gitlab.com/wolfee/graphi-2022/game
     - name: Map 8
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=8
+      run: docker run --env MAP=8 registry.gitlab.com/wolfee/graphi-2022/game
     - name: Map 9
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=9
+      run: docker run --env MAP=9 registry.gitlab.com/wolfee/graphi-2022/game
     - name: Map 10
-      run: docker run registry.gitlab.com/wolfee/graphi-2022/game --env MAP=10
+      run: docker run --env MAP=10 registry.gitlab.com/wolfee/graphi-2022/game
