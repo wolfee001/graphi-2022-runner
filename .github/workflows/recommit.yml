@@ -12,7 +12,6 @@ on:
 jobs:
   recommit:
     runs-on: ubuntu-latest
-    secrets: inherit
     steps:
     - name: Recommit
       run: |
