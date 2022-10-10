@@ -1,13 +1,13 @@
 name: Recommit
 
 on:
-  - workflow_dispatch: {}
-  - workflow_call:
-      secrets:
-        - GITLAB_USERNAME:
-            required: true
-        - GITLAB_ACCESS_TOKEN:
-            required: true
+  workflow_dispatch: {}
+  workflow_call:
+    secrets:
+      GITLAB_USERNAME:
+        required: true
+      GITLAB_ACCESS_TOKEN:
+        required: true
 
 jobs:
   recommit:
