@@ -7,9 +7,6 @@ on:
 jobs:
   recommit:
     runs-on: ubuntu-latest
-
-    needs: build
-
     steps:
     - name: Recommit
       run: |
