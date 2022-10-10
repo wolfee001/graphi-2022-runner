@@ -1,0 +1,16 @@
+name: Recommit
+
+on:
+  - workflow_dispatch
+  - workflow_call
+
+jobs:
+  recommit:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+    - name: Recommit
+      run: |
+        git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git

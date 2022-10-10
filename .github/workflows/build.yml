@@ -103,3 +103,7 @@ jobs:
             echo "$TAG found."
           fi
         done
+
+  recommit:
+    needs: build
+    uses: ./.github/workflows/recommit.yml
