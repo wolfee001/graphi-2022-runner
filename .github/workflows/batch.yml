@@ -48,6 +48,7 @@ jobs:
       - name: Run games
         run: |
           cp environments/${{ github.event.inputs.environment }}.env .env
+          docker compose pull
           for MAP in ${{ github.event.inputs.maps }}
           do
             echo "Running map $MAP"
@@ -61,22 +62,3 @@ jobs:
     steps:
       - run: |
           echo "collect"
-
-  # game:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v2
-
-  #   - name: Login to GitLab
-  #     uses: docker/login-action@v2
-  #     with:
-  #       registry: registry.gitlab.com
-  #       username: ${{ secrets.GITLAB_USERNAME }}
-  #       password: ${{ secrets.GITLAB_PASSWORD }}
-    
-  #   - name: Run game
-  #     run: |
-  #       cp environments/${{ github.event.inputs.environment }}.env .env
-  #       docker compose up
