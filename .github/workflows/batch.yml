@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-        echo "collect"
+          echo "collect"
 
   # game:
   #   runs-on: ubuntu-latest
