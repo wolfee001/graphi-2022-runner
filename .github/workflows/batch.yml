@@ -26,7 +26,7 @@ jobs:
           echo $ARRAY
           ARRAY=$ARRAY"${{ github.event.inputs.runs }}"
           echo $ARRAY
-          COMMAND='name=matrix::{"run":["$ARRAY"]}'
+          COMMAND='name=matrix::{"run":['$ARRAY']}'
           echo $COMMAND
           echo "::set-output "$COMMAND
 
