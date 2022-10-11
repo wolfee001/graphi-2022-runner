@@ -21,14 +21,9 @@ jobs:
       - id: generator
         run: |
           ARR=($(seq 1 1 $((${{ github.event.inputs.runs }}-1))))
-          echo $ARR
           ARRAY=`printf "%s, " "${ARR[@]}"`
-          echo $ARRAY
           ARRAY=$ARRAY"${{ github.event.inputs.runs }}"
-          echo $ARRAY
-          COMMAND='name=matrix::{"run":['$ARRAY']}'
-          echo $COMMAND
-          echo "::set-output "$COMMAND
+          echo '::set-output name=matrix::{"run":['$ARRAY']}'
 
   run:
     needs: generator
@@ -37,7 +32,14 @@ jobs:
       matrix: ${{fromJSON(needs.generator.outputs.matrix)}}
     steps:
       - run: |
-          echo ${{ matrix.agent }}
+          echo ${{ matrix.run }}
+
+  collect:
+    needs: run
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+        echo "collect"
 
   # game:
   #   runs-on: ubuntu-latest
