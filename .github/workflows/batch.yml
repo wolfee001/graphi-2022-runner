@@ -24,9 +24,9 @@ jobs:
           echo $ARR
           ARRAY=`printf "%s, " "${ARR[@]}"`
           echo $ARRAY
-          ARRAY="["$ARRAY${{ github.event.inputs.runs }}"]"
+          ARRAY=$ARRAY${{ github.event.inputs.runs }}
           echo $ARRAY
-          COMMAND="::set-output name=matrix::{\"run\":"$ARRAY"}"
+          COMMAND='::set-output name=matrix::{"run":["$ARRAY"]}'
           echo $COMMAND
 
   run:
