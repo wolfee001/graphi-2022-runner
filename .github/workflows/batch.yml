@@ -7,23 +7,48 @@ on:
         description: "Environment"
         required: true
         default: 'v1'
+      runs:
+        description: "Runs"
+        required: true
+        default: 100
 
 jobs:
-  game:
+  generator:
     runs-on: ubuntu-latest
-
+    outputs:
+      matrix: ${{ steps.generator.outputs.matrix }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - id: generator
+        run: |
+          ARR=($(seq 1 1 $((${{ github.event.inputs.runs }}-1))))
+          ARRAY=`printf "%s, " "${ARR[@]}"`
+          ARRAY="["$ARRAY${{ github.event.inputs.runs }}"]"
+          echo "::set-output name=matrix::{\"run\":$ARRAY}"
 
-    - name: Login to GitLab
-      uses: docker/login-action@v2
-      with:
-        registry: registry.gitlab.com
-        username: ${{ secrets.GITLAB_USERNAME }}
-        password: ${{ secrets.GITLAB_PASSWORD }}
+  run:
+    needs: generator
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJSON(needs.generator.outputs.matrix)}}
+    steps:
+      - run: |
+          echo ${{ matrix.agent }}
+
+  # game:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+
+  #   - name: Login to GitLab
+  #     uses: docker/login-action@v2
+  #     with:
+  #       registry: registry.gitlab.com
+  #       username: ${{ secrets.GITLAB_USERNAME }}
+  #       password: ${{ secrets.GITLAB_PASSWORD }}
     
-    - name: Run game
-      run: |
-        cp environments/${{ github.event.inputs.environment }}.env .env
-        docker compose up
+  #   - name: Run game
+  #     run: |
+  #       cp environments/${{ github.event.inputs.environment }}.env .env
+  #       docker compose up
