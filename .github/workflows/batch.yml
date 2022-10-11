@@ -21,7 +21,9 @@ jobs:
       - id: generator
         run: |
           ARR=($(seq 1 1 $((${{ github.event.inputs.runs }}-1))))
+          echo $ARR
           ARRAY=`printf "%s, " "${ARR[@]}"`
+          echo $ARRAY
           ARRAY="["$ARRAY${{ github.event.inputs.runs }}"]"
           echo $ARRAY
           COMMAND="::set-output name=matrix::{\"run\":"$ARRAY"}"
