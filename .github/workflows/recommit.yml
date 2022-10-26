@@ -8,9 +8,9 @@ on:
         required: true
       GH_PAT:
         required: true
-      ECO_USERNAME:
+      ECO_GITLAB_USERNAME:
         required: true
-      ECO_PASSWORD:
+      ECO_GITLAB_PASS:
         required: true
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
         git config --global user.email "routing.allstars@gmail.com"
         git config --global user.name "Routing AllStars"
         git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
-        git clone http://${{ secrets.ECO_USERNAME }}:${{ secrets.ECO_PASSWORD }}@git-ecosim.dyndns.org:11111/graphisoft/2022/routing_allstars.git
+        git clone http://${{ secrets.ECO_GITLAB_USERNAME }}:${{ secrets.ECO_GITLAB_PASS }}@git-ecosim.dyndns.org:11111/graphisoft/2022/routing_allstars.git
         cd routing_allstars
         git checkout main_graphiland
         rm -rf *.c *.cpp *.h

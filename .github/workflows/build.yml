@@ -110,5 +110,5 @@ jobs:
     secrets:
       GH_USERNAME: ${{ secrets.GH_USERNAME }}
       GH_PAT: ${{ secrets.GH_PAT }}
-      ECO_USERNAME: ${{ secrets.ECO_GITLAB_USERNAME }}
-      ECO_PASSWORD: ${{ secrets.ECO_GITLAB_PASS }}
+      ECO_GITLAB_USERNAME: ${{ secrets.ECO_GITLAB_USERNAME }}
+      ECO_GITLAB_PASS: ${{ secrets.ECO_GITLAB_PASS }}
