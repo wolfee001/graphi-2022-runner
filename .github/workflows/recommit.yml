@@ -29,4 +29,5 @@ jobs:
         cp ../graphiland/game/*.cpp .
         cp ../graphiland/game/*.h .
         git add *
-        git commit -m "auto puNp"
+        git commit -m "auto puNp" --allow-empty
+        git push
