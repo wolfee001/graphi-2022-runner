@@ -77,10 +77,10 @@ jobs:
         cd graphiland
         cmake -B build -DCMAKE_BUILD_TYPE=Release
         cmake --build build --config Release --target install
-        docker build -t ghcr.io/wolfee001/graphiland/game:latest -f dockers/game ./target
-        docker image push ghcr.io/wolfee001/graphiland/game:latest
-        docker build -t ghcr.io/wolfee001/graphiland/server:latest -f dockers/server ./target
-        docker image push ghcr.io/wolfee001/graphiland/server:latest
+        docker build -t ghcr.io/routingallstars/graphiland/game:latest -f dockers/game ./target
+        docker image push ghcr.io/routingallstars/graphiland/game:latest
+        docker build -t ghcr.io/routingallstars/graphiland/server:latest -f dockers/server ./target
+        docker image push ghcr.io/routingallstars/graphiland/server:latest
 
     # - name: Check tags
     #   run: |
