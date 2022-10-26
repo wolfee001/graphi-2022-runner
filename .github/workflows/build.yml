@@ -5,44 +5,44 @@ on:
   - workflow_dispatch
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+  # build:
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, macos-latest, windows-latest]
 
-    runs-on: ${{ matrix.os }}
+  #   runs-on: ${{ matrix.os }}
 
-    steps:
-    - name: Checkout
-      run: |
-        git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
+  #   steps:
+  #   - name: Checkout
+  #     run: |
+  #       git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
 
-    - name: Install conan
-      uses: turtlebrowser/get-conan@main
+  #   - name: Install conan
+  #     uses: turtlebrowser/get-conan@main
 
-    - name: Install extra runtime
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev
-        conan profile new default --detect
-        conan profile update conf.tools.system.package_manager:mode=install default
-        conan profile update conf.tools.system.package_manager:sudo=True default
+  #   - name: Install extra runtime
+  #     if: matrix.os == 'ubuntu-latest'
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev
+  #       conan profile new default --detect
+  #       conan profile update conf.tools.system.package_manager:mode=install default
+  #       conan profile update conf.tools.system.package_manager:sudo=True default
 
-    - name: Configure CMake
-      run: |
-        cd graphiland
-        cmake -B build -DCMAKE_BUILD_TYPE=Release
+  #   - name: Configure CMake
+  #     run: |
+  #       cd graphiland
+  #       cmake -B build -DCMAKE_BUILD_TYPE=Release
 
-    - name: Build
-      run: |
-        cd graphiland
-        cmake --build build --config Release --target install
+  #   - name: Build
+  #     run: |
+  #       cd graphiland
+  #       cmake --build build --config Release --target install
 
-    - name: Test
-      run: |
-        cd graphiland/build
-        ctest . -C Release
+  #   - name: Test
+  #     run: |
+  #       cd graphiland/build
+  #       ctest . -C Release
 
   generate_missing_images:
     runs-on: ubuntu-latest
@@ -65,50 +65,50 @@ jobs:
         conan profile update conf.tools.system.package_manager:mode=install default
         conan profile update conf.tools.system.package_manager:sudo=True default
 
-    - name: Login to GitLab
+    - name: Login to registry
       uses: docker/login-action@v2
       with:
-        registry: registry.gitlab.com
-        username: ${{ secrets.GITLAB_USERNAME }}
-        password: ${{ secrets.GITLAB_PASSWORD }}
+        registry: ghcr.io
+        username: ${{ secrets.GH_USERNAME }}
+        password: ${{ secrets.GH_PAT }}
 
     - name: Build latest
       run: |
         cd graphiland
         cmake -B build -DCMAKE_BUILD_TYPE=Release
         cmake --build build --config Release --target install
-        docker build -t registry.gitlab.com/wolfee/graphi-2022/game:latest -f dockers/game ./target
-        docker image push registry.gitlab.com/wolfee/graphi-2022/game:latest
-        docker build -t registry.gitlab.com/wolfee/graphi-2022/server:latest -f dockers/server ./target
-        docker image push registry.gitlab.com/wolfee/graphi-2022/server:latest
+        docker build -t ghcr.io/routingallstars/graphiland/game:latest -f dockers/game ./target
+        docker image push ghcr.io/routingallstars/graphiland/game:latest
+        docker build -t ghcr.io/routingallstars/graphiland/server:latest -f dockers/server ./target
+        docker image push ghcr.io/routingallstars/graphiland/server:latest
 
-    - name: Check tags
-      run: |
-        cd graphiland
-        git show-ref --tags | while read -r line ; do
-          HASH=`echo $line | cut -d ' ' -f1`
-          TAG=`echo $line | cut -d ' ' -f2`
-          TAG=`echo $TAG | cut -d '/' -f3`
-          echo "Checking tag $TAG..."
-          DOCKER_OUTPUT=`docker pull registry.gitlab.com/wolfee/graphi-2022/game:$TAG &> /dev/null || echo "NOT FOUND"`
-          if [[ $DOCKER_OUTPUT == "NOT FOUND" ]]; then
-            echo "$TAG not found, building from hash $HASH..."
-            rm -rf build
-            git checkout $HASH
-            cmake -B build -DCMAKE_BUILD_TYPE=Release
-            cmake --build build --config Release --target install
-            docker build -t registry.gitlab.com/wolfee/graphi-2022/game:$TAG -f dockers/game ./target
-            docker image push registry.gitlab.com/wolfee/graphi-2022/game:$TAG
-          else
-            echo "$TAG found."
-          fi
-        done
+    # - name: Check tags
+    #   run: |
+    #     cd graphiland
+    #     git show-ref --tags | while read -r line ; do
+    #       HASH=`echo $line | cut -d ' ' -f1`
+    #       TAG=`echo $line | cut -d ' ' -f2`
+    #       TAG=`echo $TAG | cut -d '/' -f3`
+    #       echo "Checking tag $TAG..."
+    #       DOCKER_OUTPUT=`docker pull registry.gitlab.com/wolfee/graphi-2022/game:$TAG &> /dev/null || echo "NOT FOUND"`
+    #       if [[ $DOCKER_OUTPUT == "NOT FOUND" ]]; then
+    #         echo "$TAG not found, building from hash $HASH..."
+    #         rm -rf build
+    #         git checkout $HASH
+    #         cmake -B build -DCMAKE_BUILD_TYPE=Release
+    #         cmake --build build --config Release --target install
+    #         docker build -t registry.gitlab.com/wolfee/graphi-2022/game:$TAG -f dockers/game ./target
+    #         docker image push registry.gitlab.com/wolfee/graphi-2022/game:$TAG
+    #       else
+    #         echo "$TAG found."
+    #       fi
+    #     done
 
-  recommit:
-    needs: build
-    uses: ./.github/workflows/recommit.yml
-    secrets:
-      GH_USERNAME: ${{ secrets.GH_USERNAME }}
-      GH_PAT: ${{ secrets.GH_PAT }}
-      ECO_GITLAB_USERNAME: ${{ secrets.ECO_GITLAB_USERNAME }}
-      ECO_GITLAB_PASS: ${{ secrets.ECO_GITLAB_PASS }}
+  # recommit:
+  #   needs: build
+  #   uses: ./.github/workflows/recommit.yml
+  #   secrets:
+  #     GH_USERNAME: ${{ secrets.GH_USERNAME }}
+  #     GH_PAT: ${{ secrets.GH_PAT }}
+  #     ECO_GITLAB_USERNAME: ${{ secrets.ECO_GITLAB_USERNAME }}
+  #     ECO_GITLAB_PASS: ${{ secrets.ECO_GITLAB_PASS }}
