@@ -13,29 +13,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Login to GitLab
+    - name: Login to registry
       uses: docker/login-action@v2
       with:
-        registry: registry.gitlab.com
-        username: ${{ secrets.GITLAB_USERNAME }}
-        password: ${{ secrets.GITLAB_PASSWORD }}
+        registry: ghcr.io
+        username: ${{ secrets.GH_USERNAME }}
+        password: ${{ secrets.GH_PAT }}
     - name: Map 1
-      run: docker run --env MAP=1 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=1 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 2
-      run: docker run --env MAP=2 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=2 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 3
-      run: docker run --env MAP=3 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=3 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 4
-      run: docker run --env MAP=4 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=4 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 5
-      run: docker run --env MAP=5 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=5 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 6
-      run: docker run --env MAP=6 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=6 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 7
-      run: docker run --env MAP=7 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=7 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 8
-      run: docker run --env MAP=8 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=8 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 9
-      run: docker run --env MAP=9 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=9 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 10
-      run: docker run --env MAP=10 registry.gitlab.com/wolfee/graphi-2022/game:${{ github.event.inputs.tag }}
+      run: docker run --env MAP=10 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}

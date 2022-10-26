@@ -1,6 +1,6 @@
 services:
   server:
-    image: registry.gitlab.com/wolfee/graphi-2022/server:latest
+    image: ghcr.io/routingallstars/graphiland/server:latest
     network_mode: "host"
     environment:
       - MAP=${MAP}
@@ -8,7 +8,7 @@ services:
   player1:
     depends_on:
       - server
-    image: registry.gitlab.com/wolfee/graphi-2022/game:${P1}
+    image: ghcr.io/routingallstars/graphiland/game:${P1}
     network_mode: "host"
     environment:
       - MAP=${MAP}
@@ -16,7 +16,7 @@ services:
   player2:
     depends_on:
       - player1
-    image: registry.gitlab.com/wolfee/graphi-2022/game:${P2}
+    image: ghcr.io/routingallstars/graphiland/game:${P2}
     network_mode: "host"
     environment:
       - MAP=${MAP}
@@ -24,7 +24,7 @@ services:
   player3:
     depends_on:
       - player2
-    image: registry.gitlab.com/wolfee/graphi-2022/game:${P3}
+    image: ghcr.io/routingallstars/graphiland/game:${P3}
     network_mode: "host"
     environment:
       - MAP=${MAP}
@@ -32,7 +32,7 @@ services:
   player4:
     depends_on:
       - player3
-    image: registry.gitlab.com/wolfee/graphi-2022/game:${P4}
+    image: ghcr.io/routingallstars/graphiland/game:${P4}
     network_mode: "host"
     environment:
       - MAP=${MAP}
