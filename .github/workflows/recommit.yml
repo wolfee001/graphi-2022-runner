@@ -26,6 +26,7 @@ jobs:
         cd routing_allstars
         git checkout main_graphiland
         rm -rf *.c *.cpp *.h
-        cp ../graphiland/game/*.c ../graphiland/game/*.cpp ../graphiland/game/*.h .
+        cp ../graphiland/game/*.cpp .
+        cp ../graphiland/game/*.h .
         git add *
         git commit -m "auto puNp"
