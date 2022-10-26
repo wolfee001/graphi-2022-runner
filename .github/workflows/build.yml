@@ -109,6 +109,6 @@ jobs:
     uses: ./.github/workflows/recommit.yml
     secrets:
       GH_USERNAME: ${{ secrets.GH_USERNAME }}
-      GH_ACCESS_TOKEN: ${{ secrets.GH_PAT }}
+      GH_PAT: ${{ secrets.GH_PAT }}
       ECO_USERNAME: ${{ secrets.ECO_GITLAB_USERNAME }}
       ECO_PASSWORD: ${{ secrets.ECO_GITLAB_PASS }}
