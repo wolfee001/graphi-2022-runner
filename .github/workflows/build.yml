@@ -15,7 +15,7 @@ jobs:
     steps:
     - name: Checkout
       run: |
-        git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
+        git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
 
     - name: Install conan
       uses: turtlebrowser/get-conan@main
@@ -52,7 +52,7 @@ jobs:
     steps:
     - name: Checkout
       run: |
-        git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
+        git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
 
     - name: Install conan
       uses: turtlebrowser/get-conan@main
@@ -108,5 +108,7 @@ jobs:
     needs: build
     uses: ./.github/workflows/recommit.yml
     secrets:
-      GITLAB_USERNAME: ${{ secrets.GITLAB_USERNAME }}
-      GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
+      GH_USERNAME: ${{ secrets.GH_USERNAME }}
+      GH_ACCESS_TOKEN: ${{ secrets.GH_PAT }}
+      ECO_USERNAME: ${{ secrets.ECO_GITLAB_USERNAME }}
+      ECO_PASSWORD: ${{ secrets.ECO_GITLAB_PASS }}

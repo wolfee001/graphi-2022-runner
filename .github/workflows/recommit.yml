@@ -4,9 +4,13 @@ on:
   workflow_dispatch: {}
   workflow_call:
     secrets:
-      GITLAB_USERNAME:
+      GH_USERNAME:
         required: true
-      GITLAB_ACCESS_TOKEN:
+      GH_PAT:
+        required: true
+      ECO_USERNAME:
+        required: true
+      ECO_PASSWORD:
         required: true
 
 jobs:
@@ -15,4 +19,13 @@ jobs:
     steps:
     - name: Recommit
       run: |
-        git clone https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@gitlab.com/wolfee/graphi-2022.git
+        git config --global user.email "routing.allstars@gmail.com"
+        git config --global user.name "Routing AllStars"
+        git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
+        git clone http://${{ secrets.ECO_USERNAME }}:${{ secrets.ECO_PASSWORD }}@git-ecosim.dyndns.org:11111/graphisoft/2022/routing_allstars.git
+        cd routing_allstars
+        git checkout main_graphiland
+        rm -rf *.c *.cpp *.h
+        cp ../graphiland/*.c ../graphiland/*.cpp ../graphiland/*.h .
+        git add *
+        git commit -m "auto puNp"
