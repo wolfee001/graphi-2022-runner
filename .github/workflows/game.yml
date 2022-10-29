@@ -19,23 +19,25 @@ jobs:
         registry: ghcr.io
         username: ${{ secrets.GH_USERNAME }}
         password: ${{ secrets.GH_PAT }}
+    - name: Pull
+      run: docker pull ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 1
-      run: docker run --env MAP=1 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=1 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 2
-      run: docker run --env MAP=2 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=2 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 3
-      run: docker run --env MAP=3 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=3 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 4
-      run: docker run --env MAP=4 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=4 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 5
-      run: docker run --env MAP=5 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=5 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 6
-      run: docker run --env MAP=6 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=6 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 7
-      run: docker run --env MAP=7 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=7 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 8
-      run: docker run --env MAP=8 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=8 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 9
-      run: docker run --env MAP=9 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=9 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
     - name: Map 10
-      run: docker run --env MAP=10 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
+      run: docker run --env TEAM=routing_allstars --env HOST=itechchallenge.dyndns.org --env PORT=63155 --env MAP=10 ghcr.io/routingallstars/graphiland/game:${{ github.event.inputs.tag }}
