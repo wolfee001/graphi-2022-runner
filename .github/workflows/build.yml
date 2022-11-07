@@ -8,7 +8,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -18,7 +18,7 @@ jobs:
         git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
 
     - name: Install conan
-      uses: turtlebrowser/get-conan@main
+      uses: turtlebrowser/get-conan@v1.1
 
     - name: Install extra runtime
       if: matrix.os == 'ubuntu-latest'
