@@ -95,14 +95,14 @@ jobs:
 
           docker compose up
 
-          mkdir ${{ matrix.run.map }}
-          mv result.log ${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
+          mkdir -p results/${{ matrix.run.map }}
+          mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
 
       - name: Upload run data
         uses: actions/upload-artifact@v3
         with:
           name: results
-          path: ${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
+          path: results/
 
   collect:
     needs: run
@@ -110,8 +110,6 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
-        with:
-          path: results
 
       - run: |
-          ls results
+          ls -R
