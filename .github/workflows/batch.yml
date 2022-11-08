@@ -34,7 +34,7 @@ on:
       maps:
         description: "Maps"
         required: true
-        default: "1, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+        default: "1 2 3 4 5 6 7 8 9 10"
 
 jobs:
   generator:
@@ -44,7 +44,24 @@ jobs:
     steps:
       - id: generator
         run: |
-          echo '::set-output name=matrix::{"run":[${{ github.event.inputs.maps }}]}'
+          
+          MAPS=""
+          for i in {1..${{ github.event.inputs.runs }}}
+          do
+            MAPS="$MAPS${{ github.event.inputs.maps }},"
+          done
+
+          MAP_ARRAY=($MAPS)
+
+          SEED=42
+          MAP_JSON=""
+          for ELEMENT in "${MAP_ARRAY[@]}"
+          do
+              MAP_JSON="$MAP_JSON{\"map\": $ELEMENT, \"seed\": $SEED}, "
+              SEED=$((SEED+1))
+          done
+
+          echo '::set-output name=matrix::{"run":[$MAP_JSON]}'
 
   run:
     needs: generator
@@ -65,26 +82,8 @@ jobs:
 
       - name: Run games
         run: |
-          SEED=41
-          for RUN in {1..${{ github.event.inputs.runs }}}
-          do
-            SEED=$((SEED+1))
-            echo "Running map ${{ matrix.run }} # $RUN"
-            echo "Seed is $SEED"
-
-            echo MAP=${{ matrix.run }} >> .env
-            echo SEED=$SEED >> .env
-            echo P1=${{ github.event.inputs.P1 }} >> .env
-            echo P2=${{ github.event.inputs.P2 }} >> .env
-            echo P3=${{ github.event.inputs.P3 }} >> .env
-            echo P4=${{ github.event.inputs.P4 }} >> .env
-            echo P5=${{ github.event.inputs.P5 }} >> .env
-            echo P6=${{ github.event.inputs.P6 }} >> .env
-
-            docker compose up
-
-            rm .env
-          done
+          echo "Map: ${{ matrix.run.map }}"
+          echo "Seed: ${{ matrix.run.seed }}"
 
   collect:
     needs: run
