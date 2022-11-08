@@ -112,4 +112,21 @@ jobs:
         uses: actions/download-artifact@v3
 
       - run: |
-          ls -R
+          for DIRECTORY in results/*/;
+          do
+              FILENAME=`ls -AU $DIRECTORY | head -1`
+              HEADER=$(head -n 1 $DIRECTORY/$FILENAME)
+              echo $HEADER >> results.log
+              for FILE in $DIRECTORY*;
+              do
+                  DATA=`cat $FILE | head -2 | tail -1`
+                  echo $DATA >> results.log
+              done
+              mv results.log $DIRECTORY/results.log
+          done
+
+      - name: Upload run data
+        uses: actions/upload-artifact@v3
+        with:
+          name: results
+          path: results/
