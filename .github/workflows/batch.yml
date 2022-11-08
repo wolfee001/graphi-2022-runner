@@ -45,7 +45,7 @@ jobs:
 
       - name: Run games
         run: |
-          for RUN in ${{ github.event.inputs.runs }}
+          for RUN in {1..${{ github.event.inputs.runs }}}
           do
             echo "Running map ${{ matrix.run }} # $RUN"
           done
