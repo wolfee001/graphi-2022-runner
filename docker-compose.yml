@@ -4,6 +4,7 @@ services:
     network_mode: "host"
     environment:
       - MAP=${MAP}
+      - SEED=${SEED}
 
   player1:
     depends_on:
@@ -11,7 +12,11 @@ services:
     image: ghcr.io/routingallstars/graphiland/game:${P1}
     network_mode: "host"
     environment:
+      - TEAM=TEAM1-${P1}
+      - HOST=localhost
+      - PORT=6789
       - MAP=${MAP}
+      - KX=0
 
   player2:
     depends_on:
@@ -19,7 +24,11 @@ services:
     image: ghcr.io/routingallstars/graphiland/game:${P2}
     network_mode: "host"
     environment:
+      - TEAM=TEAM2-${P2}
+      - HOST=localhost
+      - PORT=6789
       - MAP=${MAP}
+      - KX=0
 
   player3:
     depends_on:
@@ -27,7 +36,11 @@ services:
     image: ghcr.io/routingallstars/graphiland/game:${P3}
     network_mode: "host"
     environment:
+      - TEAM=TEAM3-${P3}
+      - HOST=localhost
+      - PORT=6789
       - MAP=${MAP}
+      - KX=0
 
   player4:
     depends_on:
@@ -35,4 +48,32 @@ services:
     image: ghcr.io/routingallstars/graphiland/game:${P4}
     network_mode: "host"
     environment:
+      - TEAM=TEAM4-${P4}
+      - HOST=localhost
+      - PORT=6789
       - MAP=${MAP}
+      - KX=0
+
+  player5:
+    depends_on:
+      - player4
+    image: ghcr.io/routingallstars/graphiland/game:${P5}
+    network_mode: "host"
+    environment:
+      - TEAM=TEAM5-${P5}
+      - HOST=localhost
+      - PORT=6789
+      - MAP=${MAP}
+      - KX=0
+
+  player6:
+    depends_on:
+      - player4
+    image: ghcr.io/routingallstars/graphiland/game:${P6}
+    network_mode: "host"
+    environment:
+      - TEAM=TEAM6-${P6}
+      - HOST=localhost
+      - PORT=6789
+      - MAP=${MAP}
+      - KX=0

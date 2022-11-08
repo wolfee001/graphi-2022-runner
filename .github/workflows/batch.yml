@@ -3,12 +3,32 @@ name: Batch
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: "Environment"
+      P1:
+        description: "P1 tag"
         required: true
-        default: 'v1'
+        default: 'latest'
+      P2:
+        description: "P2 tag"
+        required: true
+        default: 'latest'
+      P3:
+        description: "P3 tag"
+        required: true
+        default: 'latest'
+      P4:
+        description: "P4 tag"
+        required: true
+        default: 'latest'
+      P5:
+        description: "P5 tag"
+        required: true
+        default: 'latest'
+      P6:
+        description: "P6 tag"
+        required: true
+        default: 'latest'
       runs:
-        description: "Runs"
+        description: "Runs per map"
         required: true
         default: 10
       maps:
@@ -45,9 +65,22 @@ jobs:
 
       - name: Run games
         run: |
+          docker compose pull
+          SEED=41
           for RUN in {1..${{ github.event.inputs.runs }}}
           do
+            SEED=$((SEED+1))
             echo "Running map ${{ matrix.run }} # $RUN"
+            export MAP=$MAP
+            export SEED=$SEED
+            export P1=${{ github.event.inputs.P1 }}
+            export P2=${{ github.event.inputs.P2 }}
+            export P3=${{ github.event.inputs.P3 }}
+            export P4=${{ github.event.inputs.P4 }}
+            export P5=${{ github.event.inputs.P5 }}
+            export P6=${{ github.event.inputs.P6 }}
+
+            docker compose up
           done
 
   collect:
