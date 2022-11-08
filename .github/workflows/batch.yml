@@ -47,8 +47,7 @@ jobs:
         run: |
           for RUN in ${{ github.event.inputs.runs }}
           do
-            echo "Running map"
-            echo ${{ matrix.run }}
+            echo "Running map ${{ matrix.run }} # $RUN"
           done
 
   collect:
