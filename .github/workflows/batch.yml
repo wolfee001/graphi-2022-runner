@@ -95,6 +95,14 @@ jobs:
 
           docker compose up
 
+          mv result.log result-${{ matrix.run.map }}-${{ matrix.run.seed }}.log
+
+      - name: Upload run data
+        uses: actions/upload-artifact@v2
+        with:
+          name: map-${{ matrix.run.map }}
+          path: result-${{ matrix.run.map }}-${{ matrix.run.seed }}.log
+
   collect:
     needs: run
     runs-on: ubuntu-latest
