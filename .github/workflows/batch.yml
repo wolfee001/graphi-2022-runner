@@ -84,8 +84,16 @@ jobs:
 
       - name: Run games
         run: |
-          echo "Map: ${{ matrix.run.map }}"
-          echo "Seed: ${{ matrix.run.seed }}"
+          echo MAP=${{ matrix.run.map }} >> .env
+          echo SEED=${{ matrix.run.seed }} >> .env
+          echo P1=${{ github.event.inputs.P1 }} >> .env
+          echo P2=${{ github.event.inputs.P2 }} >> .env
+          echo P3=${{ github.event.inputs.P3 }} >> .env
+          echo P4=${{ github.event.inputs.P4 }} >> .env
+          echo P5=${{ github.event.inputs.P5 }} >> .env
+          echo P6=${{ github.event.inputs.P6 }} >> .env
+
+          docker compose up
 
   collect:
     needs: run
