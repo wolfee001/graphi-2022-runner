@@ -10,11 +10,11 @@ on:
       runs:
         description: "Runs"
         required: true
-        default: 100
+        default: 10
       maps:
         description: "Maps"
         required: true
-        default: "1 2 3 4 5 6 7 8 9 10"
+        default: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 jobs:
   generator:
@@ -24,10 +24,7 @@ jobs:
     steps:
       - id: generator
         run: |
-          ARR=($(seq 1 1 $((${{ github.event.inputs.runs }}-1))))
-          ARRAY=`printf "%s, " "${ARR[@]}"`
-          ARRAY=$ARRAY"${{ github.event.inputs.runs }}"
-          echo '::set-output name=matrix::{"run":['$ARRAY']}'
+          echo '::set-output name=matrix::{"map":['{{ github.event.inputs.maps }}']}'
 
   run:
     needs: generator
@@ -48,13 +45,10 @@ jobs:
 
       - name: Run games
         run: |
-          cp environments/${{ github.event.inputs.environment }}.env .env
-          docker compose pull
-          for MAP in ${{ github.event.inputs.maps }}
+          for RUN in ${{ github.event.inputs.runs }}
           do
-            echo "Running map $MAP"
-            export MAP=$MAP
-            docker compose up
+            echo "Running map"
+            echo ${{ matrix.map }}
           done
 
   collect:
