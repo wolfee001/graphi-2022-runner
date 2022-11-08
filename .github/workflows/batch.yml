@@ -24,7 +24,7 @@ jobs:
     steps:
       - id: generator
         run: |
-          echo '::set-output name=matrix::{"run":[${{ github.event.inputs.runs }}]}'
+          echo '::set-output name=matrix::{"run":[${{ github.event.inputs.maps }}]}'
 
   run:
     needs: generator
