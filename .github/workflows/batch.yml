@@ -63,7 +63,7 @@ jobs:
 
           echo "{\"run\":[ $MAP_JSON ]}"
 
-          echo "::set-output name=matrix::{\"run\":[ $MAP_JSON ]}"
+          echo "{matrix}={\"run\":[ $MAP_JSON ]}" >> $GITHUB_OUTPUT
 
   run:
     needs: generator
