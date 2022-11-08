@@ -48,7 +48,7 @@ jobs:
           MAPS=""
           for i in {1..${{ github.event.inputs.runs }}}
           do
-            MAPS="$MAPS${{ github.event.inputs.maps }},"
+            MAPS="$MAPS${{ github.event.inputs.maps }}"
           done
 
           MAP_ARRAY=($MAPS)
