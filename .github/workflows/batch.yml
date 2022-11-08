@@ -95,6 +95,7 @@ jobs:
 
           docker compose up
 
+          mkdir ${{ matrix.run.map }}
           mv result.log ${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
 
       - name: Upload run data
