@@ -61,6 +61,8 @@ jobs:
               SEED=$((SEED+1))
           done
 
+          echo '{"run":[$MAP_JSON]}'
+
           echo '::set-output name=matrix::{"run":[$MAP_JSON]}'
 
   run:
