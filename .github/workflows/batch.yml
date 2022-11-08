@@ -71,7 +71,7 @@ jobs:
           do
             SEED=$((SEED+1))
             echo "Running map ${{ matrix.run }} # $RUN"
-            export MAP=$MAP
+            export MAP=${{ matrix.run }}
             export SEED=$SEED
             export P1=${{ github.event.inputs.P1 }}
             export P2=${{ github.event.inputs.P2 }}
