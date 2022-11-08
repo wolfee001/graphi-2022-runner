@@ -65,14 +65,13 @@ jobs:
 
       - name: Run games
         run: |
-          docker compose pull
-          R_SEED=41
+          SEED=41
           for RUN in {1..${{ github.event.inputs.runs }}}
           do
-            R_SEED=$((R_SEED+1))
+            SEED=$((R_SEED+1))
             echo "Running map ${{ matrix.run }} # $RUN"
             echo MAP=${{ matrix.run }} >> .env
-            echo SEED=$R_SEED >> .env
+            echo SEED=$SEED >> .env
             echo P1=${{ github.event.inputs.P1 }} >> .env
             echo P2=${{ github.event.inputs.P2 }} >> .env
             echo P3=${{ github.event.inputs.P3 }} >> .env
