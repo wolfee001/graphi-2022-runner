@@ -111,11 +111,11 @@ jobs:
           fi
         done
 
-  recommit:
-    needs: build
-    uses: ./.github/workflows/recommit.yml
-    secrets:
-      GH_USERNAME: ${{ secrets.GH_USERNAME }}
-      GH_PAT: ${{ secrets.GH_PAT }}
-      ECO_GITLAB_USERNAME: ${{ secrets.ECO_GITLAB_USERNAME }}
-      ECO_GITLAB_PASS: ${{ secrets.ECO_GITLAB_PASS }}
+#   recommit:
+#     needs: build
+#     uses: ./.github/workflows/recommit.yml
+#     secrets:
+#       GH_USERNAME: ${{ secrets.GH_USERNAME }}
+#       GH_PAT: ${{ secrets.GH_PAT }}
+#       ECO_GITLAB_USERNAME: ${{ secrets.ECO_GITLAB_USERNAME }}
+#       ECO_GITLAB_PASS: ${{ secrets.ECO_GITLAB_PASS }}
