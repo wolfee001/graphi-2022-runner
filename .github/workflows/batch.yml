@@ -52,31 +52,62 @@ jobs:
           node-version: '12.x'
       - id: generator
         run: |
-          
-          node -p "return 'Hello World!'"
+          GENERATED=`node -p "
+          const batch = ${{ github.event.inputs.batch }}
+          const batch_count = ${{ github.event.inputs.batch_size }}
 
-          # MAPS=()
+          const main = () => {
+              let maps = [];
+              if(batch == 2) {
+                  maps = [1, 2, 9, 20, 11, 12, 19, 20];
+              } else if(batch == 3) {
+                  maps = [3, 5, 6, 7, 13, 15, 16, 17];
+              } else if(batch == 6) {
+                  maps = [4, 8, 14, 18];
+              }
+              
+              const getRandomInt = (max) => {
+                  return Math.floor(Math.random() * max);
+              }
 
-          # if 
+              let seed = 42;
+              const map_json = [];
+              for(let i = 0; i < batch_count; ++i) {
+                  let all_players = [
+                    '${{ github.event.inputs.P1 }}',
+                    '${{ github.event.inputs.P2 }}',
+                    '${{ github.event.inputs.P3 }}',
+                    '${{ github.event.inputs.P4 }}',
+                    '${{ github.event.inputs.P5 }}',
+                    '${{ github.event.inputs.P6 }}'
+                  ];
+                  let players = all_players.slice(0, batch);
+                  players = players.map(value => ({ value, sort: Math.random() }))
+                                  .sort((a, b) => a.sort - b.sort)
+                                  .map(({ value }) => value);
+                  for(let p = 0; p < players.length; ++p) {
+                      all_players[p] = players[p];
+                  }
+                  map_json.push({
+                      map: maps[getRandomInt(maps.length)],
+                      seed,
+                      p0: all_players[0],
+                      p1: all_players[1],
+                      p2: all_players[2],
+                      p3: all_players[3],
+                      p4: all_players[4],
+                      p5: all_players[5],
+                  });
+                  seed++;
+              }
 
-          # for i in {1..${{ github.event.inputs.runs }}}
-          # do
-          #   MAPS="$MAPS ${{ github.event.inputs.maps }} "
-          # done
+              return JSON.stringify(map_json);
+          }
 
-          # MAP_ARRAY=($MAPS)
+          main()
+          "`
 
-          # SEED=42
-          # MAP_JSON=""
-          # for ELEMENT in "${MAP_ARRAY[@]}"
-          # do
-          #     MAP_JSON="$MAP_JSON{\"map\": $ELEMENT, \"seed\": $SEED}, "
-          #     SEED=$((SEED+1))
-          # done
-
-          # echo "{\"run\":[ $MAP_JSON ]}"
-
-          # echo "matrix={\"run\":[ $MAP_JSON ]}" >> $GITHUB_OUTPUT
+          # echo "matrix={\"run\":$GENERATED}" >> $GITHUB_OUTPUT
 
   run:
     needs: generator
@@ -94,14 +125,14 @@ jobs:
 
       - name: Run games
         run: |
-          # echo MAP=${{ matrix.run.map }}
-          # echo SEED=${{ matrix.run.seed }}
-          # echo P1=${{ github.event.inputs.P1 }}
-          # echo P2=${{ github.event.inputs.P2 }}
-          # echo P3=${{ github.event.inputs.P3 }}
-          # echo P4=${{ github.event.inputs.P4 }}
-          # echo P5=${{ github.event.inputs.P5 }}
-          # echo P6=${{ github.event.inputs.P6 }}
+          echo MAP=${{ matrix.run.map }}
+          echo SEED=${{ matrix.run.seed }}
+          echo P1=${{ matrix.run.p0 }}
+          echo P2=${{ matrix.run.p1 }}
+          echo P3=${{ matrix.run.p2 }}
+          echo P4=${{ matrix.run.p3 }}
+          echo P5=${{ matrix.run.p4 }}
+          echo P6=${{ matrix.run.p5 }}
 
   # run:
   #   needs: generator
