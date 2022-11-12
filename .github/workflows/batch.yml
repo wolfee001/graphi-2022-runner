@@ -27,43 +27,56 @@ on:
         description: "P6 tag"
         required: true
         default: 'latest'
-      runs:
-        description: "Runs per map"
+      batch:
+        description: "Batch player count"
         required: true
-        default: 10
-      maps:
-        description: "Maps"
+        type: choice
+        options:
+          - 2
+          - 3
+          - 6
+      batch_size:
+        description: "Batch size"
         required: true
-        default: "1 2 3 4 5 6 7 8 9 10"
+        default: 100
 
 jobs:
   generator:
-    runs-on: ubuntu-latest
+    runs-on: node
     outputs:
       matrix: ${{ steps.generator.outputs.matrix }}
     steps:
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '12.x'
       - id: generator
         run: |
           
-          MAPS=""
-          for i in {1..${{ github.event.inputs.runs }}}
-          do
-            MAPS="$MAPS ${{ github.event.inputs.maps }} "
-          done
+          node -p "return 'Hello World!'"
 
-          MAP_ARRAY=($MAPS)
+          # MAPS=()
 
-          SEED=42
-          MAP_JSON=""
-          for ELEMENT in "${MAP_ARRAY[@]}"
-          do
-              MAP_JSON="$MAP_JSON{\"map\": $ELEMENT, \"seed\": $SEED}, "
-              SEED=$((SEED+1))
-          done
+          # if 
 
-          echo "{\"run\":[ $MAP_JSON ]}"
+          # for i in {1..${{ github.event.inputs.runs }}}
+          # do
+          #   MAPS="$MAPS ${{ github.event.inputs.maps }} "
+          # done
 
-          echo "matrix={\"run\":[ $MAP_JSON ]}" >> $GITHUB_OUTPUT
+          # MAP_ARRAY=($MAPS)
+
+          # SEED=42
+          # MAP_JSON=""
+          # for ELEMENT in "${MAP_ARRAY[@]}"
+          # do
+          #     MAP_JSON="$MAP_JSON{\"map\": $ELEMENT, \"seed\": $SEED}, "
+          #     SEED=$((SEED+1))
+          # done
+
+          # echo "{\"run\":[ $MAP_JSON ]}"
+
+          # echo "matrix={\"run\":[ $MAP_JSON ]}" >> $GITHUB_OUTPUT
 
   run:
     needs: generator
@@ -72,9 +85,6 @@ jobs:
       matrix: ${{fromJSON(needs.generator.outputs.matrix)}}
       max-parallel: 19
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
       - name: Login to registry
         uses: docker/login-action@v2
         with:
@@ -84,49 +94,77 @@ jobs:
 
       - name: Run games
         run: |
-          echo MAP=${{ matrix.run.map }} >> .env
-          echo SEED=${{ matrix.run.seed }} >> .env
-          echo P1=${{ github.event.inputs.P1 }} >> .env
-          echo P2=${{ github.event.inputs.P2 }} >> .env
-          echo P3=${{ github.event.inputs.P3 }} >> .env
-          echo P4=${{ github.event.inputs.P4 }} >> .env
-          echo P5=${{ github.event.inputs.P5 }} >> .env
-          echo P6=${{ github.event.inputs.P6 }} >> .env
+          # echo MAP=${{ matrix.run.map }}
+          # echo SEED=${{ matrix.run.seed }}
+          # echo P1=${{ github.event.inputs.P1 }}
+          # echo P2=${{ github.event.inputs.P2 }}
+          # echo P3=${{ github.event.inputs.P3 }}
+          # echo P4=${{ github.event.inputs.P4 }}
+          # echo P5=${{ github.event.inputs.P5 }}
+          # echo P6=${{ github.event.inputs.P6 }}
 
-          docker compose up
+  # run:
+  #   needs: generator
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix: ${{fromJSON(needs.generator.outputs.matrix)}}
+  #     max-parallel: 19
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-          mkdir -p results/${{ matrix.run.map }}
-          mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
+  #     - name: Login to registry
+  #       uses: docker/login-action@v2
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ secrets.GH_USERNAME }}
+  #         password: ${{ secrets.GH_PAT }}
 
-      - name: Upload run data
-        uses: actions/upload-artifact@v3
-        with:
-          name: results
-          path: results/
+  #     - name: Run games
+  #       run: |
+  #         echo MAP=${{ matrix.run.map }} >> .env
+  #         echo SEED=${{ matrix.run.seed }} >> .env
+  #         echo P1=${{ github.event.inputs.P1 }} >> .env
+  #         echo P2=${{ github.event.inputs.P2 }} >> .env
+  #         echo P3=${{ github.event.inputs.P3 }} >> .env
+  #         echo P4=${{ github.event.inputs.P4 }} >> .env
+  #         echo P5=${{ github.event.inputs.P5 }} >> .env
+  #         echo P6=${{ github.event.inputs.P6 }} >> .env
 
-  collect:
-    needs: run
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
+  #         docker compose up
 
-      - run: |
-          for DIRECTORY in results/*/;
-          do
-              FILENAME=`ls -AU $DIRECTORY | head -1`
-              HEADER=$(head -n 1 $DIRECTORY/$FILENAME)
-              echo $HEADER >> results.log
-              for FILE in $DIRECTORY*;
-              do
-                  DATA=`cat $FILE | head -2 | tail -1`
-                  echo $DATA >> results.log
-              done
-              mv results.log $DIRECTORY/results.log
-          done
+  #         mkdir -p results/${{ matrix.run.map }}
+  #         mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
 
-      - name: Upload run data
-        uses: actions/upload-artifact@v3
-        with:
-          name: results
-          path: results/
+  #     - name: Upload run data
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: results
+  #         path: results/
+
+  # collect:
+  #   needs: run
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v3
+
+  #     - run: |
+  #         for DIRECTORY in results/*/;
+  #         do
+  #             FILENAME=`ls -AU $DIRECTORY | head -1`
+  #             HEADER=$(head -n 1 $DIRECTORY/$FILENAME)
+  #             echo $HEADER >> results.log
+  #             for FILE in $DIRECTORY*;
+  #             do
+  #                 DATA=`cat $FILE | head -2 | tail -1`
+  #                 echo $DATA >> results.log
+  #             done
+  #             mv results.log $DIRECTORY/results.log
+  #         done
+
+  #     - name: Upload run data
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: results
+  #         path: results/
