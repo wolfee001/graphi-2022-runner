@@ -107,7 +107,7 @@ jobs:
           main()
           "`
 
-          # echo "matrix={\"run\":$GENERATED}" >> $GITHUB_OUTPUT
+          echo "matrix={\"run\":$GENERATED}" >> $GITHUB_OUTPUT
 
   run:
     needs: generator
