@@ -42,7 +42,7 @@ on:
 
 jobs:
   generator:
-    runs-on: node
+    runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.generator.outputs.matrix }}
     steps:
