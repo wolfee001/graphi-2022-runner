@@ -125,14 +125,25 @@ jobs:
 
       - name: Run games
         run: |
-          echo MAP=${{ matrix.run.map }}
-          echo SEED=${{ matrix.run.seed }}
-          echo P1=${{ matrix.run.p0 }}
-          echo P2=${{ matrix.run.p1 }}
-          echo P3=${{ matrix.run.p2 }}
-          echo P4=${{ matrix.run.p3 }}
-          echo P5=${{ matrix.run.p4 }}
-          echo P6=${{ matrix.run.p5 }}
+          echo MAP=${{ matrix.run.map }} >> .env
+          echo SEED=${{ matrix.run.seed }} >> .env
+          echo P1=${{ matrix.run.p0 }} >> .env
+          echo P2=${{ matrix.run.p1 }} >> .env
+          echo P3=${{ matrix.run.p2 }} >> .env
+          echo P4=${{ matrix.run.p3 }} >> .env
+          echo P5=${{ matrix.run.p4 }} >> .env
+          echo P6=${{ matrix.run.p5 }} >> .env
+
+          docker compose up
+
+          mkdir -p results/${{ matrix.run.map }}
+          mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
+
+      - name: Upload run data
+        uses: actions/upload-artifact@v3
+        with:
+          name: results
+          path: results/
 
   # run:
   #   needs: generator
