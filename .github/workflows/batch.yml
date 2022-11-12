@@ -147,6 +147,44 @@ jobs:
           name: results
           path: results/
 
+  collect:
+    needs: run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+
+      - run: |
+          HEADER=""
+          for DIRECTORY in results/*/;
+          do
+              FILENAME=`ls -AU $DIRECTORY | head -1`
+              HEADER=$(head -n 1 $DIRECTORY/$FILENAME)
+              echo $HEADER >> results.log
+              for FILE in $DIRECTORY*;
+              do
+                  DATA=`cat $FILE | head -2 | tail -1`
+                  echo $DATA >> results.log
+              done
+              mv results.log $DIRECTORY/results.log
+          done
+
+          echo $HEADER >> results.log
+
+          for DIRECTORY in results/*;
+          do
+              DATA=(`cat $DIRECTORY/results.log | tail -n +2`)
+              for str in ${DATA[@]}; do
+                  echo $str >> results.log
+              done
+          done
+
+      - name: Upload run data
+        uses: actions/upload-artifact@v3
+        with:
+          name: results
+          path: results/
+
   # run:
   #   needs: generator
   #   runs-on: ubuntu-latest
