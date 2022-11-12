@@ -169,13 +169,13 @@ jobs:
               mv results.log $DIRECTORY/results.log
           done
 
-          echo $HEADER >> results.log
+          echo $HEADER >> results/results.log
 
           for DIRECTORY in results/*;
           do
               DATA=(`cat $DIRECTORY/results.log | tail -n +2`)
               for str in ${DATA[@]}; do
-                  echo $str >> results.log
+                  echo $str >> results/results.log
               done
           done
 
@@ -184,69 +184,3 @@ jobs:
         with:
           name: results
           path: results/
-
-  # run:
-  #   needs: generator
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix: ${{fromJSON(needs.generator.outputs.matrix)}}
-  #     max-parallel: 19
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: Login to registry
-  #       uses: docker/login-action@v2
-  #       with:
-  #         registry: ghcr.io
-  #         username: ${{ secrets.GH_USERNAME }}
-  #         password: ${{ secrets.GH_PAT }}
-
-  #     - name: Run games
-  #       run: |
-  #         echo MAP=${{ matrix.run.map }} >> .env
-  #         echo SEED=${{ matrix.run.seed }} >> .env
-  #         echo P1=${{ github.event.inputs.P1 }} >> .env
-  #         echo P2=${{ github.event.inputs.P2 }} >> .env
-  #         echo P3=${{ github.event.inputs.P3 }} >> .env
-  #         echo P4=${{ github.event.inputs.P4 }} >> .env
-  #         echo P5=${{ github.event.inputs.P5 }} >> .env
-  #         echo P6=${{ github.event.inputs.P6 }} >> .env
-
-  #         docker compose up
-
-  #         mkdir -p results/${{ matrix.run.map }}
-  #         mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
-
-  #     - name: Upload run data
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: results
-  #         path: results/
-
-  # collect:
-  #   needs: run
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v3
-
-  #     - run: |
-  #         for DIRECTORY in results/*/;
-  #         do
-  #             FILENAME=`ls -AU $DIRECTORY | head -1`
-  #             HEADER=$(head -n 1 $DIRECTORY/$FILENAME)
-  #             echo $HEADER >> results.log
-  #             for FILE in $DIRECTORY*;
-  #             do
-  #                 DATA=`cat $FILE | head -2 | tail -1`
-  #                 echo $DATA >> results.log
-  #             done
-  #             mv results.log $DIRECTORY/results.log
-  #         done
-
-  #     - name: Upload run data
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: results
-  #         path: results/
