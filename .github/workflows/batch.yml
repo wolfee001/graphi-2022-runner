@@ -134,6 +134,8 @@ jobs:
           echo P5=${{ matrix.run.p4 }} >> .env
           echo P6=${{ matrix.run.p5 }} >> .env
 
+          cat .env
+
           docker compose up
 
           mkdir -p results/${{ matrix.run.map }}
