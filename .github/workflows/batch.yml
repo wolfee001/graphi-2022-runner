@@ -139,8 +139,9 @@ jobs:
           docker compose up
 
           mkdir -p results/${{ matrix.run.map }}
+          mkdir -p results/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
           mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
-          mv commlog results/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
+          cp commlog/* results/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
 
       - name: Upload run data
         uses: actions/upload-artifact@v3
