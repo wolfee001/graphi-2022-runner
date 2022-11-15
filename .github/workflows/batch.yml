@@ -148,6 +148,7 @@ jobs:
           docker compose up
 
           mkdir -p results/${{ matrix.run.map }}
+          mkdir -p commlog/${{ matrix.run.map }}
           mkdir -p commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
           mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
           cp commlog/* commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
