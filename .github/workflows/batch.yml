@@ -147,16 +147,23 @@ jobs:
 
           docker compose up
 
-          mkdir -p results/results/${{ matrix.run.map }}
-          mkdir -p results/commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
-          mv result.log results/results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
-          cp commlog/* results/commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
+          mkdir -p results/${{ matrix.run.map }}
+          mkdir -p commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
+          mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
+          cp commlog/* commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
 
       - name: Upload results
         uses: actions/upload-artifact@v3
         with:
           name: results
           path: results/
+
+      - name: Upload commlog
+        uses: actions/upload-artifact@v3
+        with:
+          name: commlog
+          path: commlog/
+
       - name: Upload cerr
         uses: actions/upload-artifact@v3
         with:
@@ -172,7 +179,7 @@ jobs:
 
       - run: |
           HEADER=""
-          for DIRECTORY in results/results/*/;
+          for DIRECTORY in results/*/;
           do
               FILENAME=`ls -AU $DIRECTORY | head -1`
               HEADER=$(head -n 1 $DIRECTORY/$FILENAME)
@@ -185,13 +192,13 @@ jobs:
               mv results.log $DIRECTORY/results.log
           done
 
-          echo $HEADER >> results/results/results.log
+          echo $HEADER >> results/results.log
 
-          for DIRECTORY in results/results/*;
+          for DIRECTORY in results/*;
           do
               DATA=(`cat $DIRECTORY/results.log | tail -n +2`)
               for str in ${DATA[@]}; do
-                  echo $str >> results/results/results.log
+                  echo $str >> results/results.log
               done
           done
 
