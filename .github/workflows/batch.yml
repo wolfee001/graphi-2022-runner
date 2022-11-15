@@ -148,8 +148,7 @@ jobs:
           docker compose up
 
           mkdir -p results/${{ matrix.run.map }}
-          mkdir -p commlog/${{ matrix.run.map }}
-          mkdir -p commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
+          mkdir -p comm/${{ matrix.run.map }}/comm-${{ matrix.run.seed }}
           mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
           cp commlog/* commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
 
@@ -159,11 +158,11 @@ jobs:
           name: results
           path: results/
 
-      - name: Upload commlog
+      - name: Upload comm
         uses: actions/upload-artifact@v3
         with:
-          name: commlog
-          path: commlog/
+          name: comm
+          path: comm/
 
       - name: Upload cerr
         uses: actions/upload-artifact@v3
