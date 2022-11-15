@@ -150,7 +150,7 @@ jobs:
           mkdir -p results/${{ matrix.run.map }}
           mkdir -p comm/${{ matrix.run.map }}/comm-${{ matrix.run.seed }}
           mv result.log results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
-          cp commlog/* commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
+          cp commlog/* comm/${{ matrix.run.map }}/comm-${{ matrix.run.seed }}
 
       - name: Upload results
         uses: actions/upload-artifact@v3
