@@ -136,14 +136,14 @@ jobs:
           echo P5=${{ matrix.run.p4 }} >> .env
           echo P6=${{ matrix.run.p5 }} >> .env
 
-          mkdir -p results/cerr/${{ matrix.run.map }}
+          mkdir -p cerr/${{ matrix.run.map }}
 
-          docker compose logs -f player1 > results/cerr/${{ matrix.run.map }}/p0-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > results/cerr/${{ matrix.run.map }}/p1-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > results/cerr/${{ matrix.run.map }}/p2-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > results/cerr/${{ matrix.run.map }}/p3-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > results/cerr/${{ matrix.run.map }}/p4-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > results/cerr/${{ matrix.run.map }}/p5-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p0-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p1-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p2-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p3-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p4-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p5-${{ matrix.run.seed }}.log 2>&1 &
 
           docker compose up
 
@@ -152,11 +152,16 @@ jobs:
           mv result.log results/results/${{ matrix.run.map }}/result-${{ matrix.run.seed }}.log
           cp commlog/* results/commlog/${{ matrix.run.map }}/commlog-${{ matrix.run.seed }}
 
-      - name: Upload run data
+      - name: Upload results
         uses: actions/upload-artifact@v3
         with:
           name: results
           path: results/
+      - name: Upload cerr
+        uses: actions/upload-artifact@v3
+        with:
+          name: cerr
+          path: cerr/
 
   collect:
     needs: run
