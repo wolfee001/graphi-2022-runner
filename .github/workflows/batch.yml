@@ -139,11 +139,11 @@ jobs:
           mkdir -p cerr/${{ matrix.run.map }}
 
           docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p0-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p1-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p2-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p3-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p4-${{ matrix.run.seed }}.log 2>&1 &
-          docker compose logs -f player1 > cerr/${{ matrix.run.map }}/p5-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player2 > cerr/${{ matrix.run.map }}/p1-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player3 > cerr/${{ matrix.run.map }}/p2-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player4 > cerr/${{ matrix.run.map }}/p3-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player5 > cerr/${{ matrix.run.map }}/p4-${{ matrix.run.seed }}.log 2>&1 &
+          docker compose logs -f player6 > cerr/${{ matrix.run.map }}/p5-${{ matrix.run.seed }}.log 2>&1 &
 
           docker compose up
 
