@@ -50,11 +50,9 @@ jobs:
       run: |
         cd graphiland/build
         ctest . -C Release
-
-  generate_missing_images:
+        
+  generate_latest:
     runs-on: ubuntu-latest
-
-    needs: build
 
     steps:
     - name: Checkout
@@ -88,6 +86,34 @@ jobs:
         docker image push ghcr.io/routingallstars/graphiland/game:latest
         docker build -t ghcr.io/routingallstars/graphiland/server:latest -f dockers/server ./target
         docker image push ghcr.io/routingallstars/graphiland/server:latest
+
+  generate_tags:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+    - name: Checkout
+      run: |
+        git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
+
+    - name: Install conan
+      uses: turtlebrowser/get-conan@main
+
+    - name: Install extra runtime
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgl-dev pkg-config libgl1-mesa-dev libglu1-mesa-dev
+        conan profile new default --detect
+        conan profile update conf.tools.system.package_manager:mode=install default
+        conan profile update conf.tools.system.package_manager:sudo=True default
+
+    - name: Login to registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ secrets.GH_USERNAME }}
+        password: ${{ secrets.GH_PAT }}
 
     - name: Check tags
       run: |
