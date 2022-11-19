@@ -173,7 +173,7 @@ jobs:
         git checkout ${{ github.ref_name }}
         cmake -B build -DCMAKE_BUILD_TYPE=Release
         cmake --build build --config Release --target install
-        docker build -t ghcr.io/routingallstars/graphiland/game:latest -f dockers/game ./target
+        docker build -t ghcr.io/routingallstars/graphiland/game:custom/${{ github.ref_name }} -f dockers/game ./target
         docker image push ghcr.io/routingallstars/graphiland/game:custom/${{ github.ref_name }}
 
   # recommit:
