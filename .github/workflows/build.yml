@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    if: ${{ github.ref == 'refs/heads/master' }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
@@ -52,6 +53,7 @@ jobs:
         ctest . -C Release
         
   generate_latest:
+    if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -88,6 +90,7 @@ jobs:
         docker image push ghcr.io/routingallstars/graphiland/server:latest
 
   generate_tags:
+    if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
 
     needs: build
@@ -137,7 +140,44 @@ jobs:
           fi
         done
 
+  generate_custom:
+    if: ${{ github.ref != 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      run: |
+        git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
+        git checkout ${{ github.ref_name }}
+
+    - name: Install conan
+      uses: turtlebrowser/get-conan@main
+
+    - name: Install extra runtime
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgl-dev pkg-config libgl1-mesa-dev libglu1-mesa-dev
+        conan profile new default --detect
+        conan profile update conf.tools.system.package_manager:mode=install default
+        conan profile update conf.tools.system.package_manager:sudo=True default
+
+    - name: Login to registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ secrets.GH_USERNAME }}
+        password: ${{ secrets.GH_PAT }}
+
+    - name: Build latest
+      run: |
+        cd graphiland
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        cmake --build build --config Release --target install
+        docker build -t ghcr.io/routingallstars/graphiland/game:latest -f dockers/game ./target
+        docker image push ghcr.io/routingallstars/graphiland/game:custom/${{ github.ref_name }}
+
   # recommit:
+  #   if: ${{ github.ref == 'refs/heads/master' }}
   #   needs: build
   #   uses: ./.github/workflows/recommit.yml
   #   secrets:
