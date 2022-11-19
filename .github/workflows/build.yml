@@ -148,7 +148,6 @@ jobs:
     - name: Checkout
       run: |
         git clone https://${{ secrets.GH_USERNAME }}:${{ secrets.GH_PAT }}@github.com/wolfee001/graphiland.git
-        git checkout ${{ github.ref_name }}
 
     - name: Install conan
       uses: turtlebrowser/get-conan@main
@@ -171,6 +170,7 @@ jobs:
     - name: Build latest
       run: |
         cd graphiland
+        git checkout ${{ github.ref_name }}
         cmake -B build -DCMAKE_BUILD_TYPE=Release
         cmake --build build --config Release --target install
         docker build -t ghcr.io/routingallstars/graphiland/game:latest -f dockers/game ./target
